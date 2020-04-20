@@ -15,7 +15,6 @@ class Game
          "Player 1 will be 'o' and player 2 will be 'x'."
     get_player_names
     while play == true
-      puts play
       @board = Board.new
       rematch = ''
       show_score
