@@ -10,15 +10,13 @@ class Game
 
   public
 
-  def start(turn = 0)
+  def start
     puts "Welcome to Tic-Tac-Toe!".center(50, '-'),
-         "Player 1 will be 'o' and player 2 will be 'x'.",
-         "\n"
+         "Player 1 will be 'o' and player 2 will be 'x'.\n "
     get_player_names
-    until turn >= 9
-      turn += 1
+    (1..9).each do |turn|
       puts "\nTurn #{turn}:"
-      mark = mark == 'o' ? 'x' : 'o'
+      mark = turn % 2 == 0 ? 'x' : 'o'
       play_turn(mark)
       if victory? mark
         puts "-" * 50,
