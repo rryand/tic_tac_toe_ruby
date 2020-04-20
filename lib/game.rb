@@ -17,7 +17,7 @@ class Game
     get_player_names
     until turn >= 9
       turn += 1
-      puts "Turn #{turn}:"
+      puts "\nTurn #{turn}:"
       mark = mark == 'o' ? 'x' : 'o'
       play_turn(mark)
       if victory? mark
@@ -66,7 +66,15 @@ class Game
   end
 
   def invalid?(tile)
-    tile > 9 || tile < 1 || @board.tiles[tile - 1] == 'o' || @board.tiles[tile - 1] == 'x'
+    if tile > 9 || tile < 1
+      puts "Choose a number between 1-9."
+      return true
+    elsif @board.tiles[tile - 1] == 'o' || @board.tiles[tile - 1] == 'x'
+      puts "That tile is already taken!"
+      return true
+    else
+      return false
+    end
   end
 
   def victory?(mark)
