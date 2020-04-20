@@ -5,6 +5,7 @@ class Game
   def initialize
     @board = Board.new
     @players = {}
+    @score = {}
     @padding = 50
   end
 
@@ -18,16 +19,8 @@ class Game
       puts "\nTurn #{turn}:"
       mark = turn % 2 == 0 ? 'x' : 'o'
       play_turn(mark)
-      if victory? mark
-        puts "-" * 50,
-             "#{@players[mark]} wins!".center(@padding, '-'),
-             "-" * 50
-        return
-      end
+      break if victory? mark, turn
     end
-    puts "-" * 50,
-         "It's a draw!".center(@padding, '-'),
-         "-" * 50
   end
 
   private
@@ -75,9 +68,20 @@ class Game
     end
   end
 
-  def victory?(mark)
-    @board.winning_tiles.any? do |tile_group|
+  def victory?(mark, turn)
+    victory = @board.winning_tiles.any? do |tile_group|
       tile_group.all? { |tile| @board.tiles[tile] == mark }
+    end
+    if victory
+      puts "-" * 50,
+      "#{@players[mark]} wins!".center(@padding, '-'),
+      "-" * 50
+      return true
+    elsif !victory && turn >= 9
+      puts "-" * 50,
+      "It's a draw!".center(@padding, '-'),
+      "-" * 50
+      return false
     end
   end
 end
