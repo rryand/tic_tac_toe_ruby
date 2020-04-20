@@ -3,23 +3,35 @@ require_relative "player"
 
 class Game
   def initialize
-    @board = Board.new
     @players = {}
-    @score = {}
+    @scores = {}
     @padding = 50
   end
 
   public
 
-  def start
+  def start(play = true)
     puts "Welcome to Tic-Tac-Toe!".center(50, '-'),
-         "Player 1 will be 'o' and player 2 will be 'x'.\n "
+         "Player 1 will be 'o' and player 2 will be 'x'."
     get_player_names
-    (1..9).each do |turn|
-      puts "\nTurn #{turn}:"
-      mark = turn % 2 == 0 ? 'x' : 'o'
-      play_turn(mark)
-      break if victory? mark, turn
+    while play == true
+      puts play
+      @board = Board.new
+      rematch = ''
+      show_score
+      (1..9).each do |turn|
+        puts "Turn #{turn}:"
+        mark = turn % 2 == 0 ? 'x' : 'o'
+        play_turn(mark)
+        puts ""
+        break if victory? mark, turn
+      end
+      show_score
+      until rematch == 'y' || rematch == 'n'
+        print "Play again?(y/n) " 
+        rematch = gets.chomp
+      end
+      play = false if rematch == 'n'
     end
   end
 
@@ -69,19 +81,27 @@ class Game
   end
 
   def victory?(mark, turn)
+    player = @players[mark]
     victory = @board.winning_tiles.any? do |tile_group|
       tile_group.all? { |tile| @board.tiles[tile] == mark }
     end
     if victory
       puts "-" * 50,
-      "#{@players[mark]} wins!".center(@padding, '-'),
-      "-" * 50
-      return true
+           "#{player} wins!".center(@padding, '-'),
+           "-" * 50
+      @scores[player] = 0 unless @scores.has_key? player
+      @scores[player] += 1
     elsif !victory && turn >= 9
       puts "-" * 50,
-      "It's a draw!".center(@padding, '-'),
-      "-" * 50
-      return false
+           "It's a draw!".center(@padding, '-'),
+           "-" * 50
     end
+    victory
+  end
+
+  def show_score
+    puts "Score: "
+    @scores.each_pair { |name, score| print "#{name}: #{score} " }
+    puts "\n"
   end
 end
