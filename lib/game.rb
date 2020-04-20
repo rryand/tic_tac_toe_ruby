@@ -17,7 +17,6 @@ class Game
     while play == true
       @board = Board.new
       rematch = ''
-      show_score
       (1..9).each do |turn|
         puts "Turn #{turn}:"
         mark = turn % 2 == 0 ? 'x' : 'o'
