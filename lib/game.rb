@@ -46,7 +46,7 @@ class Game
     end
   end
 
-  def player_choice(player, mark)
+  def player_choice(player)
     tile = 0
     while invalid? tile
       print "#{player}, choose a valid tile to mark: "
@@ -62,7 +62,7 @@ class Game
   def play_turn(mark)
     player = @players[mark]
     @board.draw_board(@padding)
-    tile = player_choice(player, mark)
+    tile = player_choice(player)
     mark_tile(tile, mark)
   end
 
