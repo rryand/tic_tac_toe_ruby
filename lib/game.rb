@@ -12,17 +12,14 @@ class Game
 
   def start(turn = 0)
     puts "Welcome to Tic-Tac-Toe!".center(50, '-'),
-     "Player 1 will be 'o' and player 2 will be 'x'.",
-     "\n"
+         "Player 1 will be 'o' and player 2 will be 'x'.",
+         "\n"
     get_player_names
     until turn >= 9
       turn += 1
-      mark = mark == 'o' ? 'x' : 'o'
-      player = @players[mark]
       puts "Turn #{turn}:"
-      @board.draw_board(@padding)
-      tile = player_choice(player, mark)
-      mark_tile(tile, mark)
+      mark = mark == 'o' ? 'x' : 'o'
+      play_turn(mark)
       if victory? mark
         puts "-" * 50,
              "#{@players[mark]} wins!".center(@padding, '-'),
@@ -50,7 +47,7 @@ class Game
 
   def player_choice(player, mark)
     tile = 0
-    while valid? tile
+    while invalid? tile
       print "#{player}, choose a valid tile to mark: "
       tile = gets.chomp.to_i
     end
@@ -61,7 +58,14 @@ class Game
     @board.tiles[tile - 1] = mark
   end
 
-  def valid?(tile)
+  def play_turn(mark)
+    player = @players[mark]
+    @board.draw_board(@padding)
+    tile = player_choice(player, mark)
+    mark_tile(tile, mark)
+  end
+
+  def invalid?(tile)
     tile > 9 || tile < 1 || @board.tiles[tile - 1] == 'o' || @board.tiles[tile - 1] == 'x'
   end
 
