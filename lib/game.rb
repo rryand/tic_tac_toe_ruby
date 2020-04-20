@@ -37,17 +37,14 @@ class Game
 
   private
 
-  def get_player_names
+  def get_player_names(name = [])
     (1..2).each do |player_number|
-      begin
+      until !name[player_number].nil? && name[player_number] != ""
         print "Enter name for player #{player_number}: "
-        name = gets.chomp
-        raise if name == ""
-      rescue
-        retry
+        name[player_number] = gets.chomp 
       end
       mark = player_number == 1 ? 'o' : 'x'
-      @players[mark] = name
+      @players[mark] = name[player_number]
     end
   end
 
